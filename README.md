@@ -367,6 +367,96 @@ npm run build            # Build do frontend
 npm start                # Executar em produção
 ```
 
+## 🧪 Como Executar os Testes
+
+O projeto possui uma estrutura organizada de testes dividida em categorias. Todos os arquivos de teste estão localizados na pasta `tests/`.
+
+### 📁 Estrutura de Testes
+
+```
+tests/
+├── debug/                       # 🔧 Arquivos de debug
+├── unit/                        # 🧪 Testes unitários
+├── integration/                 # 🔗 Testes de integração
+└── README.md                   # 📚 Documentação dos testes
+```
+
+### 🔧 Testes de Debug
+
+Para análise e resolução de problemas específicos:
+
+```bash
+# Debug de horários disponíveis
+node tests/debug/debug-available-times.js
+
+# Debug da lógica de horários
+node tests/debug/debug-horarios.js
+
+# Debug da lógica de tempo
+node tests/debug/debug-time-logic.js
+
+# Debug de usuários
+node tests/debug/debug-users.js
+```
+
+### 🧪 Testes Unitários
+
+Para validar componentes e funções específicas:
+
+```bash
+# Testes de agendamentos
+node tests/unit/test-appointments.js
+
+# Testes da lógica de datas
+node tests/unit/test-date-logic.js
+
+# Testes da lógica de datas do frontend
+node tests/unit/test-frontend-date-logic.js
+
+# Testes de horários passados
+node tests/unit/test-horarios-passados.js
+
+# Testes de "meus agendamentos"
+node tests/unit/test-my-appointments.js
+```
+
+### 🔗 Testes de Integração
+
+Para verificar interação entre componentes:
+
+```bash
+# Teste de criação de agendamentos
+node tests/integration/create-test-appointment.js
+```
+
+### 📋 Executar Todos os Testes
+
+```bash
+# Executar todos os testes de debug
+for file in tests/debug/*.js; do node "$file"; done
+
+# Executar todos os testes unitários
+for file in tests/unit/*.js; do node "$file"; done
+
+# Executar todos os testes de integração
+for file in tests/integration/*.js; do node "$file"; done
+```
+
+### 🚨 Importante
+
+- **Execute os testes** antes de fazer commits
+- **Mantenha os testes atualizados** com as mudanças do código
+- **Use dados de teste** que não afetem o banco de produção
+- **Consulte** `tests/README.md` para documentação detalhada
+
+### 📊 Status dos Testes
+
+| Categoria | Arquivos | Localização |
+|-----------|----------|-------------|
+| 🔧 Debug | 4 arquivos | `tests/debug/` |
+| 🧪 Unitários | 5 arquivos | `tests/unit/` |
+| 🔗 Integração | 1 arquivo | `tests/integration/` |
+
 ## 🎨 Personalização
 
 ### Cores e Tema
