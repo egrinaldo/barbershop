@@ -50,63 +50,7 @@ router.get('/google/callback', (req, res, next) => {
   }
 );
 
-// Rota de login (simulada para desenvolvimento - manter para testes)
-router.post('/login', async (req, res) => {
-  try {
-    const { email, name } = req.body;
-
-    if (!email || !name) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Email e nome são obrigatórios' 
-      });
-    }
-
-    // Verificar se o usuário já existe
-    let user = await prisma.user.findUnique({
-      where: { email }
-    });
-
-    // Se não existir, criar novo usuário
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
-          email,
-          name,
-          avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=6366f1&color=fff`
-        }
-      });
-    }
-
-    // Gerar token JWT
-    const token = jwt.sign(
-      { 
-        userId: user.id, 
-        email: user.email 
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    res.json({
-      success: true,
-      token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        avatar: user.avatar,
-        createdAt: user.createdAt
-      }
-    });
-  } catch (error) {
-    console.error('Erro no login:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Erro interno do servidor' 
-    });
-  }
-});
+// Endpoint de login demo removido - apenas Google OAuth é suportado
 
 // Login/Registro com Google OAuth
 router.post('/google', async (req, res) => {
