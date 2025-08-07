@@ -15,7 +15,8 @@ import {
   XCircle,
   Scissors,
   TrendingUp,
-  CalendarDays
+  CalendarDays,
+  Trash2
 } from 'lucide-react';
 import safeToast from '../utils/safeToast';
 import { format, isAfter, isBefore, startOfDay } from 'date-fns';
@@ -88,22 +89,24 @@ const Profile = () => {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      // Adicionar timestamp para evitar cache
-      const response = await axios.get(`/api/appointments?t=${Date.now()}`);
+      console.log('🔄 Buscando agendamentos...');
       
-      // Verificar se a resposta tem a estrutura esperada
-      if (response.data.success && response.data.appointments) {
-        setAppointments(response.data.appointments);
-      } else if (Array.isArray(response.data)) {
-        // Compatibilidade com formato antigo
+      // Usar a rota específica para agendamentos do usuário
+      const response = await axios.get(`/api/appointments/my-appointments?t=${Date.now()}`);
+      
+      console.log('📋 Resposta dos agendamentos:', response.data);
+      
+      // A rota /my-appointments retorna diretamente o array
+      if (Array.isArray(response.data)) {
         setAppointments(response.data);
+        console.log(`✅ ${response.data.length} agendamentos carregados`);
       } else {
-        console.warn('Formato de resposta inesperado:', response.data);
+        console.warn('⚠️ Formato de resposta inesperado:', response.data);
         setAppointments([]);
       }
     } catch (error) {
-      console.error('Erro ao carregar agendamentos:', error);
-      const errorMessage = error.response?.data?.message || 'Erro ao carregar agendamentos';
+      console.error('❌ Erro ao carregar agendamentos:', error);
+      const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Erro ao carregar agendamentos';
       safeToast.error(errorMessage);
       setAppointments([]);
     } finally {
@@ -146,11 +149,27 @@ const Profile = () => {
 
     try {
       await axios.patch(`/api/appointments/${appointmentId}/cancel`);
-     safeToast.success('Agendamento cancelado com sucesso!');
+      safeToast.success('Agendamento cancelado com sucesso!');
       fetchAppointments();
     } catch (error) {
       console.error('Erro ao cancelar agendamento:', error);
       const message = error.response?.data?.error || 'Erro ao cancelar agendamento';
+      safeToast.error(message);
+    }
+  };
+
+  const handleDeleteAppointment = async (appointmentId) => {
+    if (!window.confirm('Tem certeza que deseja excluir este agendamento? Esta ação não pode ser desfeita.')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`/api/appointments/${appointmentId}`);
+      safeToast.success('Agendamento excluído com sucesso!');
+      fetchAppointments();
+    } catch (error) {
+      console.error('Erro ao excluir agendamento:', error);
+      const message = error.response?.data?.error || 'Erro ao excluir agendamento';
       safeToast.error(message);
     }
   };
@@ -197,14 +216,29 @@ const Profile = () => {
     return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}min` : `${hours}h`;
   };
 
+  const createAppointmentDateTime = (appointment) => {
+    // Extrair apenas a parte da data (YYYY-MM-DD) da string ISO
+    const dateOnly = appointment.date.split('T')[0];
+    return new Date(`${dateOnly}T${appointment.startTime}`);
+  };
+
   const canCancelAppointment = (appointment) => {
     if (appointment.status !== 'scheduled') return false;
     
-    const appointmentDateTime = new Date(`${appointment.date}T${appointment.startTime}`);
+    const appointmentDateTime = createAppointmentDateTime(appointment);
     const now = new Date();
     const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
     
     return isAfter(appointmentDateTime, twoHoursFromNow);
+  };
+
+  const canDeleteAppointment = (appointment) => {
+    const appointmentDateTime = createAppointmentDateTime(appointment);
+    const now = new Date();
+    const isPast = appointmentDateTime < now;
+    const isCancelled = appointment.status === 'cancelled';
+    
+    return isPast || isCancelled;
   };
 
   const groupAppointmentsByStatus = () => {
@@ -213,11 +247,11 @@ const Profile = () => {
     return {
       upcoming: appointments.filter(apt => 
         apt.status === 'scheduled' && 
-        isAfter(new Date(`${apt.date}T${apt.startTime}`), today)
+        isAfter(createAppointmentDateTime(apt), today)
       ),
       past: appointments.filter(apt => 
         apt.status === 'completed' || 
-        (apt.status === 'scheduled' && isBefore(new Date(`${apt.date}T${apt.startTime}`), today))
+        (apt.status === 'scheduled' && isBefore(createAppointmentDateTime(apt), today))
       ),
       cancelled: appointments.filter(apt => apt.status === 'cancelled')
     };
@@ -470,15 +504,26 @@ const Profile = () => {
                               )}
                             </div>
 
-                            {canCancelAppointment(appointment) && (
-                              <button
-                                onClick={() => handleCancelAppointment(appointment.id)}
-                                className="ml-4 text-red-600 hover:text-red-800 transition-colors"
-                                title="Cancelar agendamento"
-                              >
-                                <XCircle className="w-5 h-5" />
-                              </button>
-                            )}
+                            <div className="flex items-center space-x-2">
+                              {canCancelAppointment(appointment) && (
+                                <button
+                                  onClick={() => handleCancelAppointment(appointment.id)}
+                                  className="text-red-600 hover:text-red-800 transition-colors"
+                                  title="Cancelar agendamento"
+                                >
+                                  <XCircle className="w-5 h-5" />
+                                </button>
+                              )}
+                              {canDeleteAppointment(appointment) && (
+                                <button
+                                  onClick={() => handleDeleteAppointment(appointment.id)}
+                                  className="text-red-600 hover:text-red-800 transition-colors"
+                                  title="Excluir agendamento"
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -533,6 +578,18 @@ const Profile = () => {
                                 </div>
                               </div>
                             </div>
+                            
+                            {canDeleteAppointment(appointment) && (
+                              <div className="flex items-center">
+                                <button
+                                  onClick={() => handleDeleteAppointment(appointment.id)}
+                                  className="text-red-600 hover:text-red-800 transition-colors"
+                                  title="Excluir agendamento"
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}

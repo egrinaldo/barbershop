@@ -89,12 +89,23 @@ const Booking = () => {
         ...(bookingData.professionalId && { professionalId: bookingData.professionalId })
       };
 
-      await axios.post('/api/appointments', appointmentData);
+      console.log('📅 Criando agendamento com dados:', appointmentData);
+      
+      const response = await axios.post('/api/appointments', appointmentData);
+      
+      console.log('✅ Agendamento criado com sucesso:', response.data);
       
       safeToast.success('Agendamento realizado com sucesso!');
       navigate('/profile?tab=appointments&refresh=true', { replace: true });
     } catch (error) {
-      console.error('Erro ao criar agendamento:', error);
+      console.error('❌ Erro ao criar agendamento:', error);
+      console.error('📋 Dados enviados:', {
+        serviceId: bookingData.serviceId,
+        date: bookingData.date,
+        startTime: bookingData.time,
+        notes: bookingData.notes,
+        professionalId: bookingData.professionalId
+      });
       const message = error.response?.data?.error || 'Erro ao criar agendamento';
       safeToast.error(message);
     } finally {
@@ -106,6 +117,7 @@ const Booking = () => {
     const dates = [];
     const today = startOfDay(new Date());
     
+    // Começar de hoje (i = 0) para não incluir datas passadas
     for (let i = 0; i < 30; i++) {
       const date = addDays(today, i);
       // Pular domingos (dia 0)
