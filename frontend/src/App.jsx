@@ -7,6 +7,8 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
+import BackToTop from './components/BackToTop';
 
 // Pages
 import Home from './pages/Home';
@@ -22,6 +24,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen flex flex-col">
           <Navbar />
           
@@ -55,6 +58,9 @@ function App() {
           </main>
           
           <Footer />
+          
+          {/* Back to Top Button */}
+          <BackToTop />
           
           {/* Toast Notifications */}
           <Toaster
