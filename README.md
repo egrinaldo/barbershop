@@ -65,22 +65,31 @@ barbearia-solidaria/
 └── README.md                   # Este arquivo
 ```
 
-## 🛠️ Instalação e Configuração
+## 🛠️ Guia de Instalação para Desenvolvedores
 
-### Pré-requisitos
-- Node.js (versão 16 ou superior)
-- npm ou yarn
-- Git
+### 📋 Pré-requisitos
 
-### 1. Clone o repositório
+Antes de começar, certifique-se de ter instalado em sua máquina:
+
+- **Node.js** (versão 16 ou superior) - [Download aqui](https://nodejs.org/)
+- **npm** (vem com Node.js) ou **yarn**
+- **Git** - [Download aqui](https://git-scm.com/)
+- **Editor de código** (recomendado: VS Code)
+
+### 🚀 Passo a Passo Completo
+
+#### **1. Clone o Repositório**
 ```bash
+# Clone o projeto do GitHub
 git clone https://github.com/egrinaldo/barbershop.git
+
+# Entre na pasta do projeto
 cd barbershop
 ```
 
-### 2. Instale as dependências
+#### **2. Instale as Dependências**
 ```bash
-# Instalar dependências do projeto principal
+# Instalar dependências do projeto principal (raiz)
 npm install
 
 # Instalar dependências do frontend
@@ -91,61 +100,227 @@ npm install
 cd ../backend
 npm install
 
-# Voltar para a raiz
+# Voltar para a raiz do projeto
 cd ..
 ```
 
-### 3. Configure as variáveis de ambiente
-Crie um arquivo `.env` na raiz do projeto:
+#### **3. Configure as Variáveis de Ambiente**
+
+##### **3.1. Arquivo .env (Raiz do Projeto)**
+Crie um arquivo `.env` na **raiz do projeto** com as seguintes variáveis:
 
 ```env
-# Banco de Dados
+# ===== BANCO DE DADOS =====
 DATABASE_URL="file:./dev.db"
 
-# JWT
-JWT_SECRET="seu_jwt_secret_super_seguro_aqui"
+# ===== AUTENTICAÇÃO =====
+JWT_SECRET="seu_jwt_secret_super_seguro_aqui_123456789"
 
-# Google OAuth
-GOOGLE_CLIENT_ID="seu_google_client_id"
+# ===== GOOGLE OAUTH =====
+GOOGLE_CLIENT_ID="seu_google_client_id.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="seu_google_client_secret"
 
-# EmailJS
+# ===== EMAILJS (NOTIFICAÇÕES) =====
 EMAILJS_SERVICE_ID="seu_emailjs_service_id"
 EMAILJS_TEMPLATE_ID="seu_emailjs_template_id"
 EMAILJS_USER_ID="seu_emailjs_user_id"
 
-# Aplicação
+# ===== CONFIGURAÇÕES DA APLICAÇÃO =====
 PORT=3001
 FRONTEND_URL="http://localhost:3000"
 
-# Google Maps (opcional)
+# ===== OPCIONAL =====
 GOOGLE_MAPS_API_KEY="sua_google_maps_api_key"
 ```
 
-### 4. Configure o banco de dados
+##### **3.2. Arquivo .env (Frontend)**
+Crie um arquivo `.env` na pasta **frontend** com:
+
+```env
+# URL da API do backend
+REACT_APP_API_URL=http://localhost:3001
+```
+
+#### **4. Configure o Google OAuth** 🔐
+
+Para configurar a autenticação com Google:
+
+1. **Acesse o [Google Cloud Console](https://console.cloud.google.com/)**
+2. **Crie um novo projeto** ou selecione um existente
+3. **Ative a Google+ API**:
+   - Vá em "APIs & Services" > "Library"
+   - Procure por "Google+ API" e ative
+4. **Configure as credenciais**:
+   - Vá em "APIs & Services" > "Credentials"
+   - Clique em "Create Credentials" > "OAuth 2.0 Client IDs"
+   - Tipo: Web application
+   - **Authorized redirect URIs**:
+     - `http://localhost:3001/api/auth/google/callback`
+     - `http://localhost:3000` (para desenvolvimento)
+5. **Copie as credenciais** e adicione no arquivo `.env`
+
+#### **5. Configure o EmailJS** 📧
+
+Para notificações por e-mail:
+
+1. **Crie uma conta em [EmailJS](https://www.emailjs.com/)**
+2. **Configure um serviço de e-mail** (Gmail, Outlook, etc.)
+3. **Crie um template** para lembretes de agendamento
+4. **Copie as credenciais** e adicione no arquivo `.env`
+
+#### **6. Configure o Banco de Dados** 🗄️
+
 ```bash
-# Gerar cliente Prisma
+# Gerar o cliente Prisma
 npx prisma generate
 
-# Aplicar migrações
+# Aplicar as migrações (criar tabelas)
+npx prisma migrate dev
+
+# OU usar push para desenvolvimento rápido
 npx prisma db push
 
-# Popular banco com dados iniciais (opcional)
-npm run db:seed
+# Popular o banco com dados iniciais (opcional)
+npm run seed
 ```
 
-### 5. Execute a aplicação
+#### **7. Execute a Aplicação** ▶️
+
+##### **Opção 1: Executar Tudo Junto (Recomendado)**
 ```bash
-# Executar frontend e backend simultaneamente
+# Executa frontend e backend simultaneamente
 npm run dev
-
-# Ou executar separadamente:
-# Backend (porta 3001)
-npm run backend
-
-# Frontend (porta 3000)
-npm run frontend
 ```
+
+##### **Opção 2: Executar Separadamente**
+```bash
+# Terminal 1 - Backend (porta 3001)
+npm run dev:backend
+
+# Terminal 2 - Frontend (porta 3000)
+npm run dev:frontend
+```
+
+#### **8. Acesse a Aplicação** 🌐
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:3001
+- **Prisma Studio**: `npx prisma studio` (interface visual do banco)
+
+### 🔧 Scripts Disponíveis
+
+```bash
+# ===== DESENVOLVIMENTO =====
+npm run dev              # Frontend + Backend juntos
+npm run dev:backend      # Apenas backend (porta 3001)
+npm run dev:frontend     # Apenas frontend (porta 3000)
+
+# ===== BANCO DE DADOS =====
+npx prisma generate      # Gerar cliente Prisma
+npx prisma migrate dev   # Aplicar migrações
+npx prisma db push       # Push do schema (desenvolvimento)
+npx prisma studio        # Interface visual do banco
+npm run seed             # Popular com dados iniciais
+
+# ===== PRODUÇÃO =====
+npm run build            # Build do frontend
+npm start                # Executar em produção
+```
+
+### 🚨 Solução de Problemas Comuns
+
+#### **Erro: "Cannot find module '@prisma/client'"**
+```bash
+npx prisma generate
+```
+
+#### **Erro: "Port 3000/3001 already in use"**
+```bash
+# Windows
+netstat -ano | findstr :3000
+taskkill /PID <PID_NUMBER> /F
+
+# Linux/Mac
+lsof -ti:3000 | xargs kill -9
+```
+
+#### **Erro: "Google OAuth not working"**
+- Verifique se as URLs de redirecionamento estão corretas
+- Confirme se a Google+ API está ativada
+- Verifique as credenciais no arquivo `.env`
+
+#### **Banco de dados não funciona**
+```bash
+# Resetar o banco
+npx prisma migrate reset
+npx prisma db push
+npm run seed
+```
+
+### 📁 Estrutura de Pastas Importante
+
+```
+projeto_barbearia_solidaria/
+├── .env                     # ⚠️ Variáveis de ambiente (RAIZ)
+├── package.json            # Scripts principais
+├── prisma/
+│   ├── schema.prisma       # Modelo do banco
+│   └── migrations/         # Migrações
+├── backend/
+│   ├── .env               # ⚠️ Variáveis do backend (se necessário)
+│   ├── package.json       # Dependências do backend
+│   ├── index.js           # Servidor principal
+│   └── routes/            # Rotas da API
+└── frontend/
+    ├── .env               # ⚠️ Variáveis do frontend
+    ├── package.json       # Dependências do frontend
+    └── src/               # Código React
+```
+
+### ✅ Checklist de Verificação
+
+Antes de começar a desenvolver, verifique se:
+
+- [ ] Node.js está instalado (`node --version`)
+- [ ] Git está configurado (`git --version`)
+- [ ] Repositório foi clonado corretamente
+- [ ] Dependências foram instaladas (raiz, frontend, backend)
+- [ ] Arquivos `.env` foram criados e configurados
+- [ ] Google OAuth está configurado
+- [ ] Banco de dados foi inicializado
+- [ ] Aplicação roda sem erros em http://localhost:3000
+- [ ] API responde em http://localhost:3001
+
+### 🤝 Fluxo de Desenvolvimento
+
+1. **Sempre trabalhe em uma branch separada**:
+   ```bash
+   git checkout -b feature/nova-funcionalidade
+   ```
+
+2. **Mantenha as dependências atualizadas**:
+   ```bash
+   npm update
+   ```
+
+3. **Teste antes de fazer commit**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Faça commits descritivos**:
+   ```bash
+   git commit -m "feat: adiciona nova funcionalidade X"
+   ```
+
+### 📞 Suporte para Desenvolvedores
+
+Se encontrar problemas durante a instalação:
+
+1. **Verifique a documentação** acima
+2. **Consulte os logs** do terminal para erros específicos
+3. **Verifique as issues** no GitHub do projeto
+4. **Entre em contato** com a equipe de desenvolvimento
 
 ## 📱 Funcionalidades
 
@@ -173,21 +348,21 @@ npm run frontend
 - ℹ️ **Sobre** - História e valores da barbearia
 - 📞 **Contato** - Informações e formulário
 
-## 🔧 Scripts Disponíveis
+## 🔧 Scripts Disponíveis (Resumo)
 
 ```bash
-# Desenvolvimento
-npm run dev              # Frontend + Backend
-npm run frontend         # Apenas frontend
-npm run backend          # Apenas backend
+# ===== DESENVOLVIMENTO =====
+npm run dev              # Frontend + Backend juntos
+npm run dev:backend      # Apenas backend (porta 3001)
+npm run dev:frontend     # Apenas frontend (porta 3000)
 
-# Banco de Dados
-npm run db:generate      # Gerar cliente Prisma
-npm run db:push          # Aplicar mudanças no schema
-npm run db:studio        # Interface visual do banco
-npm run db:seed          # Popular com dados iniciais
+# ===== BANCO DE DADOS =====
+npx prisma generate      # Gerar cliente Prisma
+npx prisma migrate       # Aplicar migrações
+npx prisma studio        # Interface visual do banco
+npm run seed             # Popular com dados iniciais
 
-# Produção
+# ===== PRODUÇÃO =====
 npm run build            # Build do frontend
 npm start                # Executar em produção
 ```
