@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Scissors, LogIn } from 'lucide-react';
+import { Scissors } from 'lucide-react';
 import GoogleLoginButton from '../components/GoogleLoginButton';
 import safeToast from '../utils/safeToast';
 
@@ -42,26 +42,7 @@ const Login = () => {
     }
   }, [searchParams]);
 
-  // Simulação do Google OAuth (em produção, usar biblioteca oficial)
-  const handleGoogleLogin = async () => {
-    try {
-      // Simulando dados do Google OAuth
-      const mockGoogleData = {
-        email: 'usuario@exemplo.com',
-        name: 'Usuário Exemplo',
-        googleId: 'google_' + Date.now(),
-        imageUrl: 'https://via.placeholder.com/150'
-      };
 
-      const success = await login(mockGoogleData);
-      if (success) {
-        navigate(from, { replace: true });
-      }
-    } catch (error) {
-      console.error('Erro no login:', error);
-      safeToast.error('Erro ao fazer login');
-    }
-  };
 
   if (loading) {
     return (
@@ -95,25 +76,6 @@ const Login = () => {
           <div className="space-y-6">
             {/* Google Login Button */}
             <GoogleLoginButton className="py-3 rounded-lg" />
-
-            {/* Demo Login Button */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-secondary-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-secondary-500">ou</span>
-              </div>
-            </div>
-
-            <button
-              onClick={handleGoogleLogin}
-              disabled={loading}
-              className="btn btn-primary w-full"
-            >
-              <LogIn className="w-4 h-4 mr-2" />
-              Login Demo (Desenvolvimento)
-            </button>
 
             {/* Info */}
             <div className="bg-primary-50 rounded-lg p-4">
