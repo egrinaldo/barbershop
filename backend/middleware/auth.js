@@ -18,7 +18,7 @@ const authenticateToken = async (req, res, next) => {
     // Verificar se o usuário ainda existe
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, email: true, name: true, phone: true, avatar: true }
+      select: { id: true, email: true, name: true, phone: true, avatar: true, createdAt: true }
     });
 
     if (!user) {
@@ -47,7 +47,7 @@ const optionalAuth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, email: true, name: true, phone: true, avatar: true }
+      select: { id: true, email: true, name: true, phone: true, avatar: true, createdAt: true }
     });
 
     req.user = user;

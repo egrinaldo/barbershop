@@ -158,7 +158,8 @@ router.post('/google', async (req, res) => {
         email: user.email,
         name: user.name,
         phone: user.phone,
-        avatar: user.avatar
+        avatar: user.avatar,
+        createdAt: user.createdAt
       }
     });
   } catch (error) {
