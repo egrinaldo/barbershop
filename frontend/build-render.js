@@ -49,16 +49,16 @@ try {
     });
   }
 
-  // Build the project
-  console.log('🏗️ Building project...');
-  execSync('npm run build', { 
+  // Build the project using react-scripts directly
+  console.log('🏗️ Building the project...');
+  execSync('npx react-scripts build', { 
     cwd: __dirname, 
-    stdio: 'inherit',
-    env: { ...process.env, NODE_ENV: 'production', GENERATE_SOURCEMAP: 'false' }
+    stdio: 'inherit' 
   });
 
   console.log('✅ Build completed successfully!');
 } catch (error) {
   console.error('❌ Build failed:', error.message);
+  console.error('Error details:', error);
   process.exit(1);
 }
