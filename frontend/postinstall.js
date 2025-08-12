@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -74,7 +74,19 @@ try {
   });
   
   // Install @apideck/better-ajv-errors (compatible version)
-  execSync('npm install @apideck/better-ajv-errors@0.3.7 --no-save --legacy-peer-deps', { 
+  execSync('npm install @apideck/better-ajv-errors@0.3.6 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install unique-string (compatible version)
+  execSync('npm install unique-string@2.0.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install tempy (compatible version)
+  execSync('npm install tempy@1.0.1 --no-save --legacy-peer-deps', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
