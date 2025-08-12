@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up', 'p-try', 'p-limit', 'p-locate', 'locate-path'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -30,7 +30,10 @@ try {
       path.join(nodeModulesPath, 'schema-utils', 'node_modules', moduleName),
       path.join(nodeModulesPath, 'terser-webpack-plugin', 'node_modules', moduleName),
       path.join(nodeModulesPath, 'browserslist', 'node_modules', moduleName),
-      path.join(nodeModulesPath, 'pkg-up', 'node_modules', moduleName)
+      path.join(nodeModulesPath, 'pkg-up', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'p-limit', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'p-locate', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'locate-path', 'node_modules', moduleName)
     ];
     
     for (const nestedPath of nestedPaths) {
@@ -196,6 +199,30 @@ try {
   
   // Install pkg-up (compatible version)
   execSync('npm install pkg-up@3.1.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install p-try (compatible version)
+  execSync('npm install p-try@2.2.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install p-limit (compatible version)
+  execSync('npm install p-limit@2.3.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install p-locate (compatible version)
+  execSync('npm install p-locate@4.1.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install locate-path (compatible version)
+  execSync('npm install locate-path@5.0.0 --no-save --legacy-peer-deps', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
