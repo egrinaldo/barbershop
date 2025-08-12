@@ -46,15 +46,40 @@ try {
 
   // Build the project using react-scripts directly
   console.log('🏗️ Building the project...');
-  execSync('npx react-scripts build', { 
-    cwd: __dirname, 
-    stdio: 'inherit',
-    env: { 
-      ...process.env, 
-      GENERATE_SOURCEMAP: 'false',
-      NODE_ENV: 'production'
+  try {
+    execSync('npx react-scripts build', { 
+      cwd: __dirname, 
+      stdio: 'pipe',
+      env: { 
+        ...process.env, 
+        GENERATE_SOURCEMAP: 'false',
+        NODE_ENV: 'production'
+      }
+    });
+  } catch (buildError) {
+    console.error('❌ Build command failed with detailed error:');
+    console.error('Exit code:', buildError.status);
+    console.error('Signal:', buildError.signal);
+    
+    if (buildError.stdout) {
+      console.error('STDOUT:');
+      console.error(buildError.stdout.toString());
     }
-  });
+    
+    if (buildError.stderr) {
+      console.error('STDERR:');
+      console.error(buildError.stderr.toString());
+    }
+    
+    // Try to extract missing module information
+    const errorOutput = (buildError.stderr || buildError.stdout || '').toString();
+    const moduleNotFoundMatch = errorOutput.match(/Cannot find module '([^']+)'/);
+    if (moduleNotFoundMatch) {
+      console.error(`🔍 Missing module detected: ${moduleNotFoundMatch[1]}`);
+    }
+    
+    throw buildError;
+  }
 
   console.log('✅ Build completed successfully!');
 } catch (error) {
