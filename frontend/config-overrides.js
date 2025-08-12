@@ -1,30 +1,10 @@
 const path = require('path');
 
 module.exports = function override(config, env) {
-  // Disable treating ESLint warnings as errors in production builds
-  if (env === 'production') {
-    // Find ESLint plugin and configure it to not fail on warnings
-    const eslintPlugin = config.plugins.find(plugin => 
-      plugin.constructor.name === 'ESLintWebpackPlugin'
-    );
-    
-    if (eslintPlugin) {
-      eslintPlugin.options = {
-        ...eslintPlugin.options,
-        failOnWarning: false,
-        failOnError: false,
-        emitWarning: true
-      };
-    }
-    
-    // Alternative: Remove ESLint plugin completely if there are dependency issues
-    // This is a fallback for environments where ESLint dependencies are problematic
-    if (process.env.DISABLE_ESLINT === 'true') {
-      config.plugins = config.plugins.filter(plugin => 
-        plugin.constructor.name !== 'ESLintWebpackPlugin'
-      );
-    }
-  }
+  // Remove ESLint plugin completely for cleaner builds
+  config.plugins = config.plugins.filter(plugin => 
+    plugin.constructor.name !== 'ESLintWebpackPlugin'
+  );
   // Remove PostCSS loader completely from CSS rules
   const oneOfRule = config.module.rules.find(rule => rule.oneOf);
   

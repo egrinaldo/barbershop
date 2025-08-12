@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up', 'p-try', 'p-limit', 'p-locate', 'locate-path', 'glob-to-regexp', 'source-list-map', 'pkg-dir', 'find-cache-dir', 'util-deprecate', 'ts-interface-checker'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up', 'p-try', 'p-limit', 'p-locate', 'locate-path', 'glob-to-regexp', 'source-list-map', 'pkg-dir', 'find-cache-dir', 'util-deprecate', 'ts-interface-checker'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -159,11 +159,7 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install eslint-webpack-plugin (compatible version)
-  execSync('npm install eslint-webpack-plugin@3.2.0 --no-save --legacy-peer-deps', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
+
   
   // Install path-exists (compatible version)
   execSync('npm install path-exists@4.0.0 --no-save --legacy-peer-deps', { 
@@ -327,23 +323,7 @@ try {
     stdio: 'inherit' 
   });
 
-  // Install parent-module (required by ESLint/import-fresh)
-  execSync('npm install parent-module@1.0.1 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
 
-  // Install import-fresh (ESLint dependency)
-  execSync('npm install import-fresh@3.3.0 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
-  // Install resolve-from (ESLint dependency)
-  execSync('npm install resolve-from@4.0.0 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
 
   console.log('✅ Post-install fixes completed!');
 } catch (error) {

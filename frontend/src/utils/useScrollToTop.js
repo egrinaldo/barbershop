@@ -16,7 +16,6 @@ export const useScrollToTop = (smooth = true, dependencies = []) => {
 
   useEffect(() => {
     scrollToTopFn();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollToTopFn, ...dependencies]);
 };
 
