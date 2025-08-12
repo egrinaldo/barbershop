@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -28,7 +28,9 @@ try {
       path.join(nodeModulesPath, 'find-up', 'node_modules', moduleName),
       path.join(nodeModulesPath, 'ajv-keywords', 'node_modules', moduleName),
       path.join(nodeModulesPath, 'schema-utils', 'node_modules', moduleName),
-      path.join(nodeModulesPath, 'terser-webpack-plugin', 'node_modules', moduleName)
+      path.join(nodeModulesPath, 'terser-webpack-plugin', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'browserslist', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'pkg-up', 'node_modules', moduleName)
     ];
     
     for (const nestedPath of nestedPaths) {
@@ -188,6 +190,12 @@ try {
   
   // Install kleur (compatible version)
   execSync('npm install kleur@4.1.5 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install pkg-up (compatible version)
+  execSync('npm install pkg-up@3.1.0 --no-save --legacy-peer-deps', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
