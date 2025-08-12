@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -25,7 +25,10 @@ try {
       path.join(nodeModulesPath, 'react-scripts', 'node_modules', moduleName),
       path.join(nodeModulesPath, 'react-dev-utils', 'node_modules', moduleName),
       path.join(nodeModulesPath, 'webpack', 'node_modules', moduleName),
-      path.join(nodeModulesPath, 'find-up', 'node_modules', moduleName)
+      path.join(nodeModulesPath, 'find-up', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'ajv-keywords', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'schema-utils', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'terser-webpack-plugin', 'node_modules', moduleName)
     ];
     
     for (const nestedPath of nestedPaths) {
@@ -155,6 +158,30 @@ try {
   
   // Install react-dev-utils (compatible version)
   execSync('npm install react-dev-utils@12.0.1 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install ajv (compatible version)
+  execSync('npm install ajv@8.12.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install ajv-keywords (compatible version)
+  execSync('npm install ajv-keywords@5.1.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install schema-utils (compatible version)
+  execSync('npm install schema-utils@4.2.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install terser-webpack-plugin (compatible version)
+  execSync('npm install terser-webpack-plugin@5.3.9 --no-save --legacy-peer-deps', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
