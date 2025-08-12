@@ -11,7 +11,6 @@
     "build:frontend": "cd frontend && npm run build",
     "build:production": "node build-production.js",
     "start": "node start.js",
-    "postinstall": "npx prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",

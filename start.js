@@ -18,6 +18,29 @@ async function start() {
       process.exit(1);
     }
 
+    // Verificar se o Prisma Client existe e gerá-lo se necessário
+    const prismaClientPath = path.join('node_modules', '.prisma', 'client');
+    if (!fs.existsSync(prismaClientPath)) {
+      console.log('🔧 Prisma Client não encontrado, tentando gerar...');
+      try {
+        const { exec } = require('child_process');
+        await new Promise((resolve, reject) => {
+          exec('npx prisma generate', { timeout: 60000 }, (error, stdout, stderr) => {
+            if (error) {
+              console.warn('⚠️ Prisma generate falhou, mas continuando...', error.message);
+            } else {
+              console.log('✅ Prisma Client gerado com sucesso!');
+            }
+            resolve(); // Sempre continuar
+          });
+        });
+      } catch (error) {
+        console.warn('⚠️ Erro ao gerar Prisma Client, mas continuando...', error.message);
+      }
+    } else {
+      console.log('✅ Prisma Client já existe');
+    }
+
     // Executar migrações apenas em produção
     if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
       console.log('🔄 Tentando executar migrações...');
