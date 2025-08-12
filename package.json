@@ -9,7 +9,7 @@
     "dev:frontend": "cd frontend && npm start",
     "build": "cd frontend && npm run build",
     "build:production": "node build-production.js",
-    "start": "node backend/index.js",
+    "start": "node start.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
