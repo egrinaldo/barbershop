@@ -32,7 +32,7 @@ try {
 
   // Check critical dependencies
   console.log('🔍 Checking dependencies...');
-  const criticalDeps = ['isexe', 'which', 'shebang-regex', 'randombytes', 'leven', 'unique-string', 'tempy', 'temp-dir', 'react-scripts'];
+  const criticalDeps = ['isexe', 'which', 'shebang-regex', 'randombytes', 'leven', 'unique-string', 'tempy', 'temp-dir', 'is-number', 'to-regex-range', 'react-scripts'];
   for (const dep of criticalDeps) {
     checkDependency(dep);
   }

@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -99,6 +99,30 @@ try {
   
   // Install workbox-build (compatible version)
   execSync('npm install workbox-build@6.6.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install is-number (compatible version)
+  execSync('npm install is-number@7.0.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install to-regex-range (compatible version)
+  execSync('npm install to-regex-range@5.0.1 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install fill-range (compatible version)
+  execSync('npm install fill-range@7.0.1 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install micromatch (compatible version)
+  execSync('npm install micromatch@4.0.5 --no-save --legacy-peer-deps', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
