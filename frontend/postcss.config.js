@@ -1,7 +1,7 @@
 module.exports = {
-  plugins: [
-    require('tailwindcss'),
-    // Removido postcss-preset-env e outras dependências problemáticas
-    // Usando apenas Tailwind CSS que é mais estável
-  ],
+  plugins: {
+    tailwindcss: {},
+    // Removido TODOS os outros plugins PostCSS para evitar erros
+    // Configuração minimalista que funciona apenas com Tailwind
+  },
 }

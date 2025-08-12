@@ -89,11 +89,7 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install unique-string (compatible version)
-  execSync('npm install unique-string@2.0.0 --no-save --legacy-peer-deps', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
+  // Install unique-string (compatible version) - will be installed later with --force flag
   
   // Install tempy (compatible version) - multiple attempts for robustness
   try {
@@ -281,6 +277,17 @@ try {
   
   // Install CSS processing utilities (replacing postcss-selector-parser)
   execSync('npm install css-tree@2.3.1 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
+  // Force install missing dependencies detected in build
+  execSync('npm install unique-string@2.0.0 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
+  execSync('npm install ts-interface-checker@1.0.2 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
