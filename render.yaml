@@ -1,5 +1,5 @@
 services:
-  # Backend - Web Service
+  # Backend - Web Service (Updated: 2025-01-12)
   - type: web
     name: barbearia-backend
     env: node
