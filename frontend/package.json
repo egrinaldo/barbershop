@@ -53,11 +53,17 @@
   "resolutions": {
     "isexe": "^3.0.0",
     "which": "^4.0.0",
-    "cross-spawn": "^7.0.3"
+    "cross-spawn": "^7.0.3",
+    "shebang-regex": "^4.0.0",
+    "shebang-command": "^2.0.0",
+    "react-scripts": "^5.0.1"
   },
   "overrides": {
     "isexe": "^3.0.0",
     "which": "^4.0.0",
-    "cross-spawn": "^7.0.3"
+    "cross-spawn": "^7.0.3",
+    "shebang-regex": "^4.0.0",
+    "shebang-command": "^2.0.0",
+    "react-scripts": "^5.0.1"
   }
 }
