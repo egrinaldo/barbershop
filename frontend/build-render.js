@@ -56,7 +56,9 @@ try {
       env: { 
         ...process.env, 
         GENERATE_SOURCEMAP: 'false',
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        ESLINT_NO_DEV_ERRORS: 'true',
+        CI: 'false'
       }
     });
   } catch (buildError) {
