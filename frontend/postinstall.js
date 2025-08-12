@@ -95,11 +95,19 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install tempy (compatible version)
-  execSync('npm install tempy@1.0.1 --no-save --legacy-peer-deps', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
+  // Install tempy (compatible version) - multiple attempts for robustness
+  try {
+    execSync('npm install tempy@3.1.0 --no-save --legacy-peer-deps --force', { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  } catch (error) {
+    console.log('Trying alternative tempy installation...');
+    execSync('npm install tempy@1.0.1 --no-save --legacy-peer-deps --force', { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  }
   
   // Install temp-dir (compatible version)
   execSync('npm install temp-dir@2.0.0 --no-save --legacy-peer-deps', { 
@@ -191,11 +199,19 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install kleur (compatible version)
-  execSync('npm install kleur@4.1.5 --no-save --legacy-peer-deps', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
+  // Install kleur (compatible version) - multiple attempts for robustness
+  try {
+    execSync('npm install kleur@4.1.5 --no-save --legacy-peer-deps --force', { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  } catch (error) {
+    console.log('Trying alternative kleur installation...');
+    execSync('npm install kleur@3.0.3 --no-save --legacy-peer-deps --force', { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  }
   
   // Install pkg-up (compatible version)
   execSync('npm install pkg-up@3.1.0 --no-save --legacy-peer-deps', { 
@@ -263,8 +279,32 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install postcss-selector-parser (compatible version)
-  execSync('npm install postcss-selector-parser@6.0.13 --no-save --legacy-peer-deps', { 
+  // Install postcss-selector-parser (compatible version) - multiple attempts for robustness
+  try {
+    execSync('npm install postcss-selector-parser@6.0.13 --no-save --legacy-peer-deps --force', { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  } catch (error) {
+    console.log('Trying alternative postcss-selector-parser installation...');
+    execSync('npm install postcss-selector-parser@6.0.10 --no-save --legacy-peer-deps --force', { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  }
+
+  // Install additional PostCSS dependencies that might be missing
+  execSync('npm install postcss@8.4.31 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
+  execSync('npm install postcss-preset-env@9.3.0 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
+  execSync('npm install cssesc@3.0.0 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
