@@ -1,35 +1,34 @@
 #!/usr/bin/env node
 
-const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
 console.log('🔧 Running post-install fixes...');
 
 try {
-  // Force install compatible dependency versions
-  const compatibleDeps = [
-    'isexe@2.0.0',
-    'which@2.0.2',
-    'shebang-regex@3.0.0',
-    'shebang-command@2.0.0',
-    'cross-spawn@7.0.3'
-  ];
+  // Check if problematic modules exist and log their versions
+  const nodeModulesPath = path.join(__dirname, 'node_modules');
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'cross-spawn'];
   
-  for (const dep of compatibleDeps) {
-    console.log(`Installing ${dep}...`);
-    try {
-      execSync(`npm install ${dep} --force --no-save`, { 
-        cwd: __dirname, 
-        stdio: 'inherit' 
-      });
-    } catch (error) {
-      console.warn(`Warning: Failed to install ${dep}:`, error.message);
+  for (const moduleName of problematicModules) {
+    const modulePath = path.join(nodeModulesPath, moduleName);
+    if (fs.existsSync(modulePath)) {
+      try {
+        const packageJsonPath = path.join(modulePath, 'package.json');
+        if (fs.existsSync(packageJsonPath)) {
+          const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+          console.log(`✓ ${moduleName}@${packageJson.version} installed`);
+        }
+      } catch (error) {
+        console.log(`? ${moduleName} found but version unknown`);
+      }
+    } else {
+      console.log(`✗ ${moduleName} not found`);
     }
   }
 
-  console.log('✅ Post-install fixes completed!');
+  console.log('✅ Post-install check completed!');
 } catch (error) {
-  console.error('❌ Post-install failed:', error.message);
+  console.error('❌ Post-install check failed:', error.message);
   // Don't exit with error to avoid breaking the build
 }

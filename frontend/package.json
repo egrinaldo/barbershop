@@ -56,20 +56,11 @@
     "node": ">=18.0.0 <21.0.0",
     "npm": ">=8.0.0"
   },
-  "resolutions": {
-    "isexe": "^2.0.0",
-    "which": "^2.0.2",
-    "cross-spawn": "^7.0.3",
-    "shebang-regex": "^3.0.0",
-    "shebang-command": "^2.0.0",
-    "react-scripts": "^5.0.1"
-  },
   "overrides": {
-    "isexe": "^2.0.0",
-    "which": "^2.0.2",
-    "cross-spawn": "^7.0.3",
-    "shebang-regex": "^3.0.0",
-    "shebang-command": "^2.0.0",
-    "react-scripts": "^5.0.1"
+    "isexe": "2.0.0",
+    "which": "2.0.2",
+    "cross-spawn": "7.0.3",
+    "shebang-regex": "3.0.0",
+    "shebang-command": "2.0.0"
   }
 }
