@@ -183,30 +183,75 @@ cd frontend/build && python -m http.server 3000
 
 ### Problemas Comuns:
 
-#### 1. Build do Frontend Falha
+#### 1. Deploy Falha com Status 1 ou 127
+```bash
+# Erro: "Exited with status 1/127 while building your code"
+# Causa: Render usando commit antigo ou dependências incorretas
+
+# ✅ SOLUÇÃO:
+1. Verificar se está usando o commit mais recente:
+   - Commit correto: 46ccc73 (fix(render): create robust startup script...)
+   - Commit problemático: 22586d9 (fix(render): move prisma to dependencies...)
+
+2. Forçar novo deploy no Render:
+   - Dashboard → Seu Backend Service
+   - Clique "Manual Deploy"
+   - Selecione branch "develop"
+   - Confirme que está usando commit 46ccc73
+
+3. Se ainda falhar, verificar logs específicos:
+   - Aba "Logs" no Render Dashboard
+   - Procurar por erros de "command not found" ou "prisma"
+```
+
+#### 2. Build do Frontend Falha
 ```bash
 # Erro: "npm ERR! peer dep missing"
 # Solução: Verificar dependências no frontend/package.json
 ```
 
-#### 2. Backend Não Conecta ao Database
+#### 3. Backend Não Conecta ao Database
 ```bash
 # Erro: "connection refused"
 # Solução: Verificar se DATABASE_URL está configurada corretamente
 # Use a Internal URL do PostgreSQL
 ```
 
-#### 3. Prisma Migration Falha
+#### 4. Prisma Migration Falha
 ```bash
 # Erro: "migration failed"
 # Solução: Verificar se o schema.prisma está correto
 # Executar: npx prisma migrate reset (cuidado em produção!)
 ```
 
-#### 4. CORS Errors
+#### 5. CORS Errors
 ```bash
 # Erro: "CORS policy"
 # Solução: Verificar se FRONTEND_URL está configurada no backend
+```
+
+### 🚨 Deploy Emergency Fix
+
+Se o deploy continuar falhando, use esta sequência de comandos:
+
+```bash
+# 1. Verificar commit atual
+git log --oneline -3
+
+# 2. Garantir que está no commit correto
+git checkout develop
+git pull origin develop
+
+# 3. Verificar se tem o arquivo start.js
+ls -la start.js
+
+# 4. Se necessário, forçar push
+git push origin develop --force-with-lease
+
+# 5. No Render Dashboard:
+#    - Manual Deploy
+#    - Clear build cache (se disponível)
+#    - Deploy from latest commit
 ```
 
 ## 📞 Suporte
