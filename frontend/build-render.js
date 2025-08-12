@@ -30,12 +30,24 @@ try {
     env: { ...process.env, NODE_ENV: 'production' }
   });
 
-  // Force reinstall react-scripts
-  console.log('🔧 Reinstalling react-scripts...');
-  execSync('npm install react-scripts@5.0.1 --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
+  // Force reinstall problematic dependencies with compatible versions
+  console.log('🔧 Installing compatible dependency versions...');
+  const compatibleDeps = [
+    'shebang-regex@3.0.0',
+    'shebang-command@2.0.0',
+    'isexe@2.0.0',
+    'which@2.0.2',
+    'cross-spawn@7.0.3',
+    'react-scripts@5.0.1'
+  ];
+  
+  for (const dep of compatibleDeps) {
+    console.log(`Installing ${dep}...`);
+    execSync(`npm install ${dep} --force`, { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  }
 
   // Build the project
   console.log('🏗️ Building project...');
