@@ -18,44 +18,23 @@ async function start() {
       process.exit(1);
     }
 
-    // Tentar gerar cliente Prisma de forma mais simples
-    if (process.env.NODE_ENV === 'production') {
-      console.log('🔧 Tentando gerar cliente Prisma...');
+    // Executar migrações apenas em produção
+    if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
+      console.log('🔄 Tentando executar migrações...');
       try {
         const { exec } = require('child_process');
         await new Promise((resolve, reject) => {
-          exec('npx prisma generate', { timeout: 30000 }, (error, stdout, stderr) => {
+          exec('npx prisma migrate deploy', { timeout: 60000 }, (error, stdout, stderr) => {
             if (error) {
-              console.warn('⚠️ Prisma generate falhou, mas continuando...', error.message);
-              resolve(); // Não falhar
+              console.warn('⚠️ Migrate falhou, mas continuando...', error.message);
             } else {
-              console.log('✅ Prisma generate executado');
-              resolve();
+              console.log('✅ Migrações executadas');
             }
+            resolve(); // Sempre continuar
           });
         });
       } catch (error) {
-        console.warn('⚠️ Erro no Prisma generate, mas continuando...', error.message);
-      }
-
-      // Tentar executar migrações
-      if (process.env.DATABASE_URL) {
-        console.log('🔄 Tentando executar migrações...');
-        try {
-          const { exec } = require('child_process');
-          await new Promise((resolve, reject) => {
-            exec('npx prisma migrate deploy', { timeout: 60000 }, (error, stdout, stderr) => {
-              if (error) {
-                console.warn('⚠️ Migrate falhou, mas continuando...', error.message);
-              } else {
-                console.log('✅ Migrações executadas');
-              }
-              resolve(); // Sempre continuar
-            });
-          });
-        } catch (error) {
-          console.warn('⚠️ Erro nas migrações, mas continuando...', error.message);
-        }
+        console.warn('⚠️ Erro nas migrações, mas continuando...', error.message);
       }
     }
 
