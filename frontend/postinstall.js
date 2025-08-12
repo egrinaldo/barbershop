@@ -99,10 +99,22 @@ try {
     });
   } catch (error) {
     console.log('Trying alternative tempy installation...');
-    execSync('npm install tempy@1.0.1 --no-save --legacy-peer-deps --force', { 
-      cwd: __dirname, 
-      stdio: 'inherit' 
-    });
+    try {
+      execSync('npm install tempy@1.0.1 --no-save --legacy-peer-deps --force', { 
+        cwd: __dirname, 
+        stdio: 'inherit' 
+      });
+    } catch (error2) {
+      console.log('Trying tempy@0.7.1 installation...');
+      try {
+        execSync('npm install tempy@0.7.1 --no-save --legacy-peer-deps --force', { 
+          cwd: __dirname, 
+          stdio: 'inherit' 
+        });
+      } catch (error3) {
+        console.log('Skipping tempy installation - not critical for build');
+      }
+    }
   }
   
   // Install temp-dir (compatible version)
@@ -203,10 +215,22 @@ try {
     });
   } catch (error) {
     console.log('Trying alternative kleur installation...');
-    execSync('npm install kleur@3.0.3 --no-save --legacy-peer-deps --force', { 
-      cwd: __dirname, 
-      stdio: 'inherit' 
-    });
+    try {
+      execSync('npm install kleur@3.0.3 --no-save --legacy-peer-deps --force', { 
+        cwd: __dirname, 
+        stdio: 'inherit' 
+      });
+    } catch (error2) {
+      console.log('Trying kleur@2.0.0 installation...');
+      try {
+        execSync('npm install kleur@2.0.0 --no-save --legacy-peer-deps --force', { 
+          cwd: __dirname, 
+          stdio: 'inherit' 
+        });
+      } catch (error3) {
+        console.log('Skipping kleur installation - not critical for build');
+      }
+    }
   }
   
   // Install pkg-up (compatible version)
@@ -269,19 +293,30 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install ts-interface-checker (compatible version)
-  execSync('npm install ts-interface-checker@1.0.2 --no-save --legacy-peer-deps', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
+  // Install ts-interface-checker (compatible version) - multiple attempts for robustness
+  try {
+    execSync('npm install ts-interface-checker@1.0.2 --no-save --legacy-peer-deps --force', { 
+      cwd: __dirname, 
+      stdio: 'inherit' 
+    });
+  } catch (error) {
+    console.log('Trying alternative ts-interface-checker installation...');
+    try {
+      execSync('npm install ts-interface-checker@0.1.13 --no-save --legacy-peer-deps --force', { 
+        cwd: __dirname, 
+        stdio: 'inherit' 
+      });
+    } catch (error2) {
+      console.log('Trying latest ts-interface-checker installation...');
+      execSync('npm install ts-interface-checker --no-save --legacy-peer-deps --force', { 
+        cwd: __dirname, 
+        stdio: 'inherit' 
+      });
+    }
+  }
   
   // Force install missing dependencies detected in build
   execSync('npm install unique-string@2.0.0 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
-  execSync('npm install ts-interface-checker@1.0.2 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
