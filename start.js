@@ -37,9 +37,23 @@ function runCommand(command, args, options = {}) {
 
 async function start() {
   try {
+    // Verificar se estamos no diretório correto
+    const fs = require('fs');
+    if (!fs.existsSync('backend/index.js')) {
+      console.error('❌ Arquivo backend/index.js não encontrado!');
+      console.log('📍 Diretório atual:', process.cwd());
+      console.log('📁 Arquivos no diretório:', fs.readdirSync('.'));
+      process.exit(1);
+    }
+
     // 1. Gerar cliente Prisma primeiro
     console.log('🔧 Gerando cliente Prisma...');
-    await runCommand('npx', ['prisma', 'generate']);
+    try {
+      await runCommand('npx', ['prisma', 'generate']);
+    } catch (generateError) {
+      console.warn('⚠️ Aviso: Falha ao gerar cliente Prisma, tentando continuar...', generateError.message);
+      // Continuar mesmo se falhar - pode já estar gerado
+    }
 
     // 2. Executar prisma migrate deploy (se necessário)
     if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
@@ -61,7 +75,15 @@ async function start() {
   } catch (error) {
     console.error('❌ Erro durante inicialização:', error.message);
     console.error('📋 Stack trace:', error.stack);
-    process.exit(1);
+    
+    // Tentar iniciar o servidor diretamente como fallback
+    console.log('🔄 Tentando iniciar servidor diretamente como fallback...');
+    try {
+      await runCommand('node', ['backend/index.js']);
+    } catch (fallbackError) {
+      console.error('❌ Fallback também falhou:', fallbackError.message);
+      process.exit(1);
+    }
   }
 }
 
