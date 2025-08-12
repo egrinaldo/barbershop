@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -19,11 +19,13 @@ try {
       fs.rmSync(modulePath, { recursive: true, force: true });
     }
     
-    // Also remove from nested node_modules
+    // Also remove from nested node_modules (more comprehensive search)
     const nestedPaths = [
       path.join(nodeModulesPath, 'cross-spawn', 'node_modules', moduleName),
       path.join(nodeModulesPath, 'react-scripts', 'node_modules', moduleName),
-      path.join(nodeModulesPath, 'webpack', 'node_modules', moduleName)
+      path.join(nodeModulesPath, 'react-dev-utils', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'webpack', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'find-up', 'node_modules', moduleName)
     ];
     
     for (const nestedPath of nestedPaths) {
@@ -147,6 +149,12 @@ try {
   
   // Install find-up (compatible version)
   execSync('npm install find-up@5.0.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install react-dev-utils (compatible version)
+  execSync('npm install react-dev-utils@12.0.1 --no-save --legacy-peer-deps', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
