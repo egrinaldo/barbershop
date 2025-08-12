@@ -327,6 +327,24 @@ try {
     stdio: 'inherit' 
   });
 
+  // Install parent-module (required by ESLint/import-fresh)
+  execSync('npm install parent-module@1.0.1 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
+  // Install import-fresh (ESLint dependency)
+  execSync('npm install import-fresh@3.3.0 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
+  // Install resolve-from (ESLint dependency)
+  execSync('npm install resolve-from@4.0.0 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
   console.log('✅ Post-install fixes completed!');
 } catch (error) {
   console.error('❌ Post-install fixes failed:', error.message);

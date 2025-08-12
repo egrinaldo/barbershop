@@ -16,6 +16,14 @@ module.exports = function override(config, env) {
         emitWarning: true
       };
     }
+    
+    // Alternative: Remove ESLint plugin completely if there are dependency issues
+    // This is a fallback for environments where ESLint dependencies are problematic
+    if (process.env.DISABLE_ESLINT === 'true') {
+      config.plugins = config.plugins.filter(plugin => 
+        plugin.constructor.name !== 'ESLintWebpackPlugin'
+      );
+    }
   }
   // Remove PostCSS loader completely from CSS rules
   const oneOfRule = config.module.rules.find(rule => rule.oneOf);

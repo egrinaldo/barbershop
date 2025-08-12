@@ -58,6 +58,7 @@ try {
         GENERATE_SOURCEMAP: 'false',
         NODE_ENV: 'production',
         ESLINT_NO_DEV_ERRORS: 'true',
+        DISABLE_ESLINT_PLUGIN: 'true',
         CI: 'false'
       }
     });
@@ -81,6 +82,31 @@ try {
     const moduleNotFoundMatch = errorOutput.match(/Cannot find module '([^']+)'/);
     if (moduleNotFoundMatch) {
       console.error(`🔍 Missing module detected: ${moduleNotFoundMatch[1]}`);
+      
+      // If it's an ESLint-related module, try building without ESLint
+      if (moduleNotFoundMatch[1].includes('parent-module') || 
+          moduleNotFoundMatch[1].includes('import-fresh') || 
+          moduleNotFoundMatch[1].includes('eslint')) {
+        console.log('🔄 Trying build without ESLint...');
+        try {
+          execSync('npx react-app-rewired build', { 
+            cwd: __dirname, 
+            stdio: 'pipe',
+            env: { 
+              ...process.env, 
+              GENERATE_SOURCEMAP: 'false',
+              NODE_ENV: 'production',
+              ESLINT_NO_DEV_ERRORS: 'true',
+              DISABLE_ESLINT: 'true',
+              CI: 'false'
+            }
+          });
+          console.log('✅ Build completed successfully without ESLint!');
+          return;
+        } catch (fallbackError) {
+          console.error('❌ Fallback build also failed:', fallbackError.message);
+        }
+      }
     }
     
     throw buildError;
