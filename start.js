@@ -18,79 +18,111 @@ async function start() {
       process.exit(1);
     }
 
-    // Forçar regeneração do Prisma Client em produção
+    // Verificar e gerar Prisma Client usando API JavaScript
     const prismaClientPath = path.join('node_modules', '.prisma', 'client');
     
-    if (process.env.NODE_ENV === 'production') {
-      console.log('🔧 Ambiente de produção detectado - forçando regeneração do Prisma Client...');
+    console.log('🔧 Verificando Prisma Client...');
+    
+    // Sempre tentar gerar em produção para garantir binaryTargets corretos
+    if (process.env.NODE_ENV === 'production' || !fs.existsSync(prismaClientPath)) {
+      console.log('🔧 Gerando Prisma Client usando API JavaScript...');
       
-      // Remover Prisma Client existente se houver
-      if (fs.existsSync(prismaClientPath)) {
-        console.log('🗑️ Removendo Prisma Client existente...');
-        try {
-          fs.rmSync(prismaClientPath, { recursive: true, force: true });
-          console.log('✅ Prisma Client removido');
-        } catch (error) {
-          console.warn('⚠️ Erro ao remover Prisma Client:', error.message);
-        }
-      }
-      
-      // Regenerar Prisma Client
-      console.log('🔧 Regenerando Prisma Client...');
       try {
-        const { exec } = require('child_process');
-        await new Promise((resolve, reject) => {
-          exec('npx prisma generate', { timeout: 120000 }, (error, stdout, stderr) => {
-            if (error) {
-              console.warn('⚠️ Prisma generate falhou, mas continuando...', error.message);
-              console.warn('📋 Stderr:', stderr);
-            } else {
-              console.log('✅ Prisma Client regenerado com sucesso!');
-              console.log('📋 Output:', stdout);
-            }
-            resolve(); // Sempre continuar
-          });
+        // Usar a API do Prisma diretamente
+        const { generateClient } = require('prisma/build/index.js');
+        
+        await generateClient({
+          schemaPath: path.join(process.cwd(), 'prisma', 'schema.prisma'),
+          binaryTargets: ['native', 'debian-openssl-3.0.x'],
+          generator: {
+            name: 'client',
+            provider: 'prisma-client-js',
+            output: prismaClientPath,
+            binaryTargets: ['native', 'debian-openssl-3.0.x']
+          }
         });
-      } catch (error) {
-        console.warn('⚠️ Erro ao regenerar Prisma Client, mas continuando...', error.message);
-      }
-    } else {
-      // Em desenvolvimento, apenas verificar se existe
-      if (!fs.existsSync(prismaClientPath)) {
-        console.log('🔧 Prisma Client não encontrado, tentando gerar...');
+        
+        console.log('✅ Prisma Client gerado com sucesso usando API JavaScript!');
+      } catch (apiError) {
+        console.warn('⚠️ API JavaScript falhou, tentando método alternativo...', apiError.message);
+        
+        // Fallback: tentar usar node diretamente
         try {
-          const { exec } = require('child_process');
+          const { spawn } = require('child_process');
           await new Promise((resolve, reject) => {
-            exec('npx prisma generate', { timeout: 60000 }, (error, stdout, stderr) => {
-              if (error) {
-                console.warn('⚠️ Prisma generate falhou, mas continuando...', error.message);
+            const child = spawn('node', [
+              path.join('node_modules', 'prisma', 'build', 'index.js'),
+              'generate'
+            ], {
+              stdio: 'pipe',
+              timeout: 120000
+            });
+            
+            child.stdout.on('data', (data) => {
+              console.log('📋 Prisma output:', data.toString());
+            });
+            
+            child.stderr.on('data', (data) => {
+              console.warn('📋 Prisma stderr:', data.toString());
+            });
+            
+            child.on('close', (code) => {
+              if (code === 0) {
+                console.log('✅ Prisma Client gerado com sucesso usando node direto!');
               } else {
-                console.log('✅ Prisma Client gerado com sucesso!');
+                console.warn('⚠️ Prisma generate falhou com código:', code);
               }
-              resolve(); // Sempre continuar
+              resolve();
+            });
+            
+            child.on('error', (error) => {
+              console.warn('⚠️ Erro ao executar prisma generate:', error.message);
+              resolve();
             });
           });
-        } catch (error) {
-          console.warn('⚠️ Erro ao gerar Prisma Client, mas continuando...', error.message);
+        } catch (fallbackError) {
+          console.warn('⚠️ Todos os métodos de geração falharam, mas continuando...', fallbackError.message);
         }
-      } else {
-        console.log('✅ Prisma Client já existe');
       }
+    } else {
+      console.log('✅ Prisma Client já existe');
     }
 
     // Executar migrações apenas em produção
     if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
       console.log('🔄 Tentando executar migrações...');
       try {
-        const { exec } = require('child_process');
+        const { spawn } = require('child_process');
         await new Promise((resolve, reject) => {
-          exec('npx prisma migrate deploy', { timeout: 60000 }, (error, stdout, stderr) => {
-            if (error) {
-              console.warn('⚠️ Migrate falhou, mas continuando...', error.message);
+          const child = spawn('node', [
+            path.join('node_modules', 'prisma', 'build', 'index.js'),
+            'migrate',
+            'deploy'
+          ], {
+            stdio: 'pipe',
+            timeout: 120000
+          });
+          
+          child.stdout.on('data', (data) => {
+            console.log('📋 Migrate output:', data.toString());
+          });
+          
+          child.stderr.on('data', (data) => {
+            console.warn('📋 Migrate stderr:', data.toString());
+          });
+          
+          child.on('close', (code) => {
+            if (code === 0) {
+              console.log('✅ Migrações executadas com sucesso!');
             } else {
-              console.log('✅ Migrações executadas');
+              console.warn('⚠️ Migrate falhou com código:', code, 'mas continuando...');
             }
-            resolve(); // Sempre continuar
+            resolve();
+          });
+          
+          child.on('error', (error) => {
+            console.warn('⚠️ Erro ao executar migrações:', error.message, 'mas continuando...');
+            resolve();
           });
         });
       } catch (error) {
