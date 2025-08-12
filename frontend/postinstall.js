@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -19,11 +19,18 @@ try {
       fs.rmSync(modulePath, { recursive: true, force: true });
     }
     
-    // Also remove from cross-spawn's node_modules if it exists
-    const crossSpawnModulePath = path.join(nodeModulesPath, 'cross-spawn', 'node_modules', moduleName);
-    if (fs.existsSync(crossSpawnModulePath)) {
-      console.log(`🗑️ Removing ${moduleName} from cross-spawn...`);
-      fs.rmSync(crossSpawnModulePath, { recursive: true, force: true });
+    // Also remove from nested node_modules
+    const nestedPaths = [
+      path.join(nodeModulesPath, 'cross-spawn', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'react-scripts', 'node_modules', moduleName),
+      path.join(nodeModulesPath, 'webpack', 'node_modules', moduleName)
+    ];
+    
+    for (const nestedPath of nestedPaths) {
+      if (fs.existsSync(nestedPath)) {
+        console.log(`🗑️ Removing ${moduleName} from nested location...`);
+        fs.rmSync(nestedPath, { recursive: true, force: true });
+      }
     }
   }
 
@@ -44,6 +51,18 @@ try {
   
   // Install shebang packages
   execSync('npm install shebang-regex@3.0.0 shebang-command@2.0.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install randombytes (compatible version)
+  execSync('npm install randombytes@2.1.0 --no-save --legacy-peer-deps', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+  
+  // Install serialize-javascript (compatible version)
+  execSync('npm install serialize-javascript@6.0.0 --no-save --legacy-peer-deps', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
