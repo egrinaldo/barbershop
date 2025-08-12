@@ -47,10 +47,10 @@ try {
   // Ensure clean CSS build without PostCSS
   console.log('🎨 Preparing CSS-only build...');
 
-  // Build the project using react-scripts directly
+  // Build the project using react-app-rewired to disable PostCSS
   console.log('🏗️ Building the project...');
   try {
-    execSync('npx react-scripts build', { 
+    execSync('npx react-app-rewired build', { 
       cwd: __dirname, 
       stdio: 'pipe',
       env: { 

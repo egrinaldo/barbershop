@@ -7,25 +7,24 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.5.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    "react-router-dom": "^6.18.0",
     "axios": "^1.6.0",
-    "react-big-calendar": "^1.8.5",
-    "moment": "^2.29.4",
-
-    "react-datepicker": "^4.21.0",
-    "react-hot-toast": "^2.4.1",
-    "lucide-react": "^0.292.0",
     "clsx": "^2.0.0",
-    "date-fns": "^2.30.0"
+    "date-fns": "^2.30.0",
+    "lucide-react": "^0.292.0",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-big-calendar": "^1.8.5",
+    "react-datepicker": "^4.21.0",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.18.0",
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "build": "node build-render.js",
-    "build-original": "react-scripts build",
-    "test": "react-scripts test",
+    "build-original": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "postinstall": "node postinstall.js"
   },
@@ -47,7 +46,9 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "react-app-rewired": "^2.2.1"
+  },
   "engines": {
     "node": ">=18.0.0 <21.0.0",
     "npm": ">=8.0.0"

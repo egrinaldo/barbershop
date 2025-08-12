@@ -286,6 +286,12 @@ try {
     stdio: 'inherit' 
   });
 
+  // Install react-app-rewired for webpack configuration override
+  execSync('npm install react-app-rewired@2.2.1 --no-save --legacy-peer-deps --force', { 
+    cwd: __dirname, 
+    stdio: 'inherit' 
+  });
+
   console.log('✅ Post-install fixes completed!');
 } catch (error) {
   console.error('❌ Post-install fixes failed:', error.message);
