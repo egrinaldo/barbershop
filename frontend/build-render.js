@@ -44,6 +44,17 @@ try {
     stdio: 'inherit' 
   });
 
+  // Install PostCSS dependencies before build
+  console.log('📦 Installing PostCSS dependencies...');
+  try {
+    execSync('npm install postcss-selector-parser@6.0.10 @csstools/selector-specificity@2.0.2 @csstools/postcss-cascade-layers@3.0.0 postcss-preset-env@8.0.1 --no-save --legacy-peer-deps --force', {
+      cwd: __dirname,
+      stdio: 'inherit'
+    });
+  } catch (installError) {
+    console.log('⚠️ PostCSS installation failed, continuing with build...');
+  }
+
   // Build the project using react-scripts directly
   console.log('🏗️ Building the project...');
   try {
