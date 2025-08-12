@@ -3,7 +3,7 @@ services:
   - type: web
     name: barbearia-frontend
     env: static
-    buildCommand: cd frontend && npm ci && npm run build
+    buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/build
     pullRequestPreviewsEnabled: true
     headers:
@@ -27,7 +27,7 @@ services:
     env: node
     plan: free
     region: oregon
-    buildCommand: npm install && npx prisma generate
+    buildCommand: npm install && npm run prisma:generate
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
