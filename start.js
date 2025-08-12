@@ -18,27 +18,64 @@ async function start() {
       process.exit(1);
     }
 
-    // Verificar se o Prisma Client existe e gerá-lo se necessário
+    // Forçar regeneração do Prisma Client em produção
     const prismaClientPath = path.join('node_modules', '.prisma', 'client');
-    if (!fs.existsSync(prismaClientPath)) {
-      console.log('🔧 Prisma Client não encontrado, tentando gerar...');
+    
+    if (process.env.NODE_ENV === 'production') {
+      console.log('🔧 Ambiente de produção detectado - forçando regeneração do Prisma Client...');
+      
+      // Remover Prisma Client existente se houver
+      if (fs.existsSync(prismaClientPath)) {
+        console.log('🗑️ Removendo Prisma Client existente...');
+        try {
+          fs.rmSync(prismaClientPath, { recursive: true, force: true });
+          console.log('✅ Prisma Client removido');
+        } catch (error) {
+          console.warn('⚠️ Erro ao remover Prisma Client:', error.message);
+        }
+      }
+      
+      // Regenerar Prisma Client
+      console.log('🔧 Regenerando Prisma Client...');
       try {
         const { exec } = require('child_process');
         await new Promise((resolve, reject) => {
-          exec('npx prisma generate', { timeout: 60000 }, (error, stdout, stderr) => {
+          exec('npx prisma generate', { timeout: 120000 }, (error, stdout, stderr) => {
             if (error) {
               console.warn('⚠️ Prisma generate falhou, mas continuando...', error.message);
+              console.warn('📋 Stderr:', stderr);
             } else {
-              console.log('✅ Prisma Client gerado com sucesso!');
+              console.log('✅ Prisma Client regenerado com sucesso!');
+              console.log('📋 Output:', stdout);
             }
             resolve(); // Sempre continuar
           });
         });
       } catch (error) {
-        console.warn('⚠️ Erro ao gerar Prisma Client, mas continuando...', error.message);
+        console.warn('⚠️ Erro ao regenerar Prisma Client, mas continuando...', error.message);
       }
     } else {
-      console.log('✅ Prisma Client já existe');
+      // Em desenvolvimento, apenas verificar se existe
+      if (!fs.existsSync(prismaClientPath)) {
+        console.log('🔧 Prisma Client não encontrado, tentando gerar...');
+        try {
+          const { exec } = require('child_process');
+          await new Promise((resolve, reject) => {
+            exec('npx prisma generate', { timeout: 60000 }, (error, stdout, stderr) => {
+              if (error) {
+                console.warn('⚠️ Prisma generate falhou, mas continuando...', error.message);
+              } else {
+                console.log('✅ Prisma Client gerado com sucesso!');
+              }
+              resolve(); // Sempre continuar
+            });
+          });
+        } catch (error) {
+          console.warn('⚠️ Erro ao gerar Prisma Client, mas continuando...', error.message);
+        }
+      } else {
+        console.log('✅ Prisma Client já existe');
+      }
     }
 
     // Executar migrações apenas em produção
