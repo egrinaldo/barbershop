@@ -35,7 +35,7 @@ services:
   - type: web
     name: barbearia-frontend
     env: static
-    buildCommand: cd frontend && rm -rf node_modules package-lock.json && npm install --legacy-peer-deps && npm run build
+    buildCommand: cd frontend && rm -rf node_modules package-lock.json .npm && npm cache clean --force && npm install --no-package-lock --legacy-peer-deps && npm run build
     staticPublishPath: ./frontend/build
     routes:
       - type: rewrite
