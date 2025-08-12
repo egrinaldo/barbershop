@@ -5,7 +5,7 @@ services:
     env: node
     plan: free
     region: oregon
-    buildCommand: npm install && npx prisma generate
+    buildCommand: npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
