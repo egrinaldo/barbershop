@@ -22,10 +22,10 @@
     "date-fns": "^2.30.0"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "react-scripts start",
     "build": "node build-render.js",
-    "build-original": "craco build",
-    "test": "craco test",
+    "build-original": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "node postinstall.js"
   },
@@ -47,9 +47,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@craco/craco": "^7.1.0"
-  },
+  "devDependencies": {},
   "engines": {
     "node": ">=18.0.0 <21.0.0",
     "npm": ">=8.0.0"
