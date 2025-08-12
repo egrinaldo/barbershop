@@ -32,7 +32,7 @@ try {
 
   // Check critical dependencies
   console.log('🔍 Checking dependencies...');
-  const criticalDependencies = ['isexe', 'which', 'shebang-regex', 'randombytes', 'leven', 'unique-string', 'tempy', 'temp-dir', 'is-number', 'to-regex-range', 'normalize-path', 'path-exists', 'react-scripts', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up', 'p-try', 'p-limit', 'p-locate', 'locate-path', 'glob-to-regexp', 'source-list-map', 'pkg-dir', 'find-cache-dir', 'util-deprecate', 'ts-interface-checker', 'postcss-selector-parser', 'postcss', 'postcss-preset-env', 'cssesc', 'postcss-loader', 'autoprefixer', 'postcss-flexbugs-fixes'];
+  const criticalDependencies = ['isexe', 'which', 'shebang-regex', 'randombytes', 'leven', 'unique-string', 'tempy', 'temp-dir', 'is-number', 'to-regex-range', 'normalize-path', 'path-exists', 'react-scripts', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up', 'p-try', 'p-limit', 'p-locate', 'locate-path', 'glob-to-regexp', 'source-list-map', 'pkg-dir', 'find-cache-dir', 'util-deprecate', 'ts-interface-checker', 'css-tree', 'css-loader', 'style-loader', 'mini-css-extract-plugin'];
   for (const dep of criticalDependencies) {
     checkDependency(dep);
   }

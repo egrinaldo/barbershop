@@ -279,48 +279,24 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install postcss-selector-parser (compatible version) - multiple attempts for robustness
-  try {
-    execSync('npm install postcss-selector-parser@6.0.13 --no-save --legacy-peer-deps --force', { 
-      cwd: __dirname, 
-      stdio: 'inherit' 
-    });
-  } catch (error) {
-    console.log('Trying alternative postcss-selector-parser installation...');
-    execSync('npm install postcss-selector-parser@6.0.10 --no-save --legacy-peer-deps --force', { 
-      cwd: __dirname, 
-      stdio: 'inherit' 
-    });
-  }
-
-  // Install additional PostCSS dependencies that might be missing
-  execSync('npm install postcss@8.4.31 --no-save --legacy-peer-deps --force', { 
+  // Install CSS processing utilities (replacing postcss-selector-parser)
+  execSync('npm install css-tree@2.3.1 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
 
-  execSync('npm install postcss-preset-env@7.8.3 --no-save --legacy-peer-deps --force', { 
+  // Install minimal CSS processing dependencies (replacing PostCSS)
+  execSync('npm install css-loader@6.8.1 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
 
-  execSync('npm install cssesc@3.0.0 --no-save --legacy-peer-deps --force', { 
+  execSync('npm install style-loader@3.3.3 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
 
-  // Install additional PostCSS dependencies that are commonly needed
-  execSync('npm install postcss-loader@6.2.1 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
-  execSync('npm install autoprefixer@10.4.16 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
-  execSync('npm install postcss-flexbugs-fixes@5.0.2 --no-save --legacy-peer-deps --force', { 
+  execSync('npm install mini-css-extract-plugin@2.7.6 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
