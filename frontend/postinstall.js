@@ -10,7 +10,7 @@ try {
   const nodeModulesPath = path.join(__dirname, 'node_modules');
   
   // Remove problematic modules completely
-  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up', 'p-try', 'p-limit', 'p-locate', 'locate-path', 'glob-to-regexp', 'source-list-map', 'pkg-dir', 'find-cache-dir', 'util-deprecate', 'ts-interface-checker', 'postcss-selector-parser'];
+  const problematicModules = ['isexe', 'which', 'shebang-regex', 'shebang-command', 'randombytes', 'serialize-javascript', 'leven', '@apideck/better-ajv-errors', 'unique-string', 'tempy', 'temp-dir', 'workbox-build', 'is-number', 'to-regex-range', 'fill-range', 'micromatch', 'normalize-path', 'eslint-webpack-plugin', 'path-exists', 'find-up', 'react-dev-utils', 'ajv', 'ajv-keywords', 'schema-utils', 'terser-webpack-plugin', 'kleur', 'pkg-up', 'p-try', 'p-limit', 'p-locate', 'locate-path', 'glob-to-regexp', 'source-list-map', 'pkg-dir', 'find-cache-dir', 'util-deprecate', 'ts-interface-checker'];
   
   for (const moduleName of problematicModules) {
     const modulePath = path.join(nodeModulesPath, moduleName);
@@ -275,12 +275,6 @@ try {
     stdio: 'inherit' 
   });
   
-  // Install CSS processing utilities (replacing postcss-selector-parser)
-  execSync('npm install css-tree@2.3.1 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
   // Force install missing dependencies detected in build
   execSync('npm install unique-string@2.0.0 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
@@ -288,22 +282,6 @@ try {
   });
 
   execSync('npm install ts-interface-checker@1.0.2 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
-  // Install minimal CSS processing dependencies (replacing PostCSS)
-  execSync('npm install css-loader@6.8.1 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
-  execSync('npm install style-loader@3.3.3 --no-save --legacy-peer-deps --force', { 
-    cwd: __dirname, 
-    stdio: 'inherit' 
-  });
-
-  execSync('npm install mini-css-extract-plugin@2.7.6 --no-save --legacy-peer-deps --force', { 
     cwd: __dirname, 
     stdio: 'inherit' 
   });
