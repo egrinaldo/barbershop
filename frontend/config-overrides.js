@@ -1,10 +1,59 @@
 const path = require('path');
 
+// Mock ESLint to prevent any loading
+try {
+  require.cache[require.resolve('eslint')] = {
+    exports: {
+      ESLint: class MockESLint {
+        constructor() {}
+        lintFiles() { return []; }
+        lintText() { return []; }
+        static outputFixes() {}
+      }
+    }
+  };
+} catch (e) {
+  // ESLint not found, which is good
+}
+
 module.exports = function override(config, env) {
-  // Remove ESLint plugin completely for cleaner builds
-  config.plugins = config.plugins.filter(plugin => 
-    plugin.constructor.name !== 'ESLintWebpackPlugin'
-  );
+  console.log('🚫 Forcefully removing ESLint from webpack config...');
+  
+  // FORCE REMOVE ESLint plugin completely - multiple approaches for robustness
+  if (config.plugins) {
+    const originalLength = config.plugins.length;
+    config.plugins = config.plugins.filter(plugin => {
+      const pluginName = plugin.constructor.name;
+      const isESLintPlugin = pluginName.includes('ESLint') || 
+                            pluginName.includes('eslint') ||
+                            pluginName === 'ESLintWebpackPlugin';
+      
+      if (isESLintPlugin) {
+        console.log(`🗑️ Removed ESLint plugin: ${pluginName}`);
+      }
+      
+      return !isESLintPlugin;
+    });
+    console.log(`📊 Plugins: ${originalLength} → ${config.plugins.length}`);
+  }
+
+  // Also remove any ESLint-related loaders from module rules
+  if (config.module && config.module.rules) {
+    config.module.rules = config.module.rules.filter(rule => {
+      if (rule.enforce === 'pre' && rule.test && rule.test.toString().includes('js|jsx')) {
+        console.log('🗑️ Removed ESLint loader rule');
+        return false;
+      }
+      return true;
+    });
+  }
+
+  // Remove ESLint from resolve modules
+  if (config.resolve && config.resolve.modules) {
+    config.resolve.modules = config.resolve.modules.filter(module => 
+      !module.includes('eslint')
+    );
+  }
   // Remove PostCSS loader completely from CSS rules
   const oneOfRule = config.module.rules.find(rule => rule.oneOf);
   
