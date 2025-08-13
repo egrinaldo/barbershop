@@ -17,6 +17,7 @@ try {
     'shebang-command@2.0.0',
     'randombytes@2.1.0',
     'leven@3.1.0',
+    'is-number@7.0.0',
     'p-limit@3.1.0',
     'merge-stream@2.0.0',
     'tempy@3.1.0',
