@@ -45,7 +45,10 @@
     ]
   },
   "devDependencies": {
-    "react-app-rewired": "^2.2.1"
+    "autoprefixer": "^10.4.21",
+    "postcss-loader": "^8.1.1",
+    "react-app-rewired": "^2.2.1",
+    "tailwindcss": "^4.1.11"
   },
   "engines": {
     "node": ">=18.0.0 <21.0.0",

@@ -43,10 +43,10 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-lg flex items-center justify-center">
                 <Scissors className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-heading font-bold text-secondary-900">
+              <span className="text-xl font-display font-bold text-gray-900">
                 Barbearia Solidária
               </span>
             </Link>
@@ -63,7 +63,7 @@ const Navbar = () => {
                   className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive(item.href)
                       ? 'text-primary-600 bg-primary-50'
-                      : 'text-secondary-600 hover:text-primary-600 hover:bg-secondary-50'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -79,7 +79,7 @@ const Navbar = () => {
               <>
                 <Link
                   to="/booking"
-                  className="btn btn-primary btn-sm"
+                  className="inline-flex items-center px-3 py-1.5 text-xs font-medium bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all duration-200"
                 >
                   <Calendar className="w-4 h-4 mr-2" />
                   Agendar
@@ -88,7 +88,7 @@ const Navbar = () => {
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-secondary-50 transition-colors"
+                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     {user?.avatar ? (
                       <img
@@ -101,16 +101,16 @@ const Navbar = () => {
                         <User className="w-4 h-4 text-primary-600" />
                       </div>
                     )}
-                    <span className="text-sm font-medium text-secondary-700">
+                    <span className="text-sm font-medium text-gray-700">
                       {user?.name?.split(' ')[0]}
                     </span>
                   </button>
 
                   {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-secondary-200 py-1">
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
                       <Link
                         to="/profile"
-                        className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-50"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         onClick={() => setShowUserMenu(false)}
                       >
                         <Settings className="w-4 h-4 mr-3" />
@@ -118,7 +118,7 @@ const Navbar = () => {
                       </Link>
                       <Link
                         to="/profile"
-                        className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-50"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                         onClick={() => setShowUserMenu(false)}
                       >
                         <Calendar className="w-4 h-4 mr-3" />
@@ -139,7 +139,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="btn btn-primary btn-sm"
+                className="inline-flex items-center px-3 py-1.5 text-xs font-medium bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all duration-200"
               >
                 <User className="w-4 h-4 mr-2" />
                 Entrar
@@ -151,7 +151,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
+              className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -161,7 +161,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-secondary-200">
+        <div className="md:hidden bg-white border-t border-gray-200">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navigation.map((item) => {
               const Icon = item.icon;
@@ -172,7 +172,7 @@ const Navbar = () => {
                   className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-base font-medium ${
                     isActive(item.href)
                       ? 'text-primary-600 bg-primary-50'
-                      : 'text-secondary-600 hover:text-primary-600 hover:bg-secondary-50'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-gray-50'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -194,7 +194,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/profile"
-                  className="flex items-center space-x-3 px-3 py-2 rounded-lg text-base font-medium text-secondary-600 hover:bg-secondary-50"
+                  className="flex items-center space-x-3 px-3 py-2 rounded-lg text-base font-medium text-gray-600 hover:bg-gray-50"
                   onClick={() => setIsOpen(false)}
                 >
                   <User className="w-5 h-5" />
