@@ -15,12 +15,13 @@ try {
     'which@2.0.2',
     'shebang-regex@3.0.0',
     'shebang-command@2.0.0',
+    'randombytes@2.1.0',
     'p-limit@3.1.0',
     'merge-stream@2.0.0',
-    'tempy@3.1.0', 
+    'tempy@3.1.0',
     'kleur@4.1.5',
     'ts-interface-checker@1.0.2'
-  ];
+];
   
   for (const dep of essentialDeps) {
     try {
