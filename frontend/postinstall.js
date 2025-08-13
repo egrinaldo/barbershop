@@ -16,6 +16,7 @@ try {
     'shebang-regex@3.0.0',
     'shebang-command@2.0.0',
     'randombytes@2.1.0',
+    'leven@3.1.0',
     'p-limit@3.1.0',
     'merge-stream@2.0.0',
     'tempy@3.1.0',
