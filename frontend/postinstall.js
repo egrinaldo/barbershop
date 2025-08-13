@@ -11,6 +11,9 @@ try {
   console.log('📦 Installing essential dependencies...');
   // Only install the most essential dependencies that are actually missing
   const essentialDeps = [
+    'isexe@2.0.0',
+    'which@2.0.2',
+    'p-limit@3.1.0',
     'merge-stream@2.0.0',
     'tempy@3.1.0', 
     'kleur@4.1.5',
