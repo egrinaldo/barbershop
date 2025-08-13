@@ -50,7 +50,7 @@ try {
   // Build the project using react-app-rewired to disable PostCSS
   console.log('🏗️ Building the project...');
   try {
-    execSync('npx react-app-rewired build', { 
+    const buildResult = execSync('npx react-app-rewired build', { 
       cwd: __dirname, 
       stdio: 'pipe',
       env: { 
@@ -64,6 +64,9 @@ try {
         SKIP_PREFLIGHT_CHECK: 'true'
       }
     });
+    
+    console.log('📋 Build output:');
+    console.log(buildResult.toString());
   } catch (buildError) {
     console.error('❌ Build command failed with detailed error:');
     console.error('Exit code:', buildError.status);
@@ -90,6 +93,24 @@ try {
   }
 
   console.log('✅ Build completed successfully!');
+  
+  // Check if build directory exists and has content
+  const buildDir = path.join(__dirname, 'build');
+  console.log(`🔍 Checking build directory: ${buildDir}`);
+  
+  if (fs.existsSync(buildDir)) {
+    const files = fs.readdirSync(buildDir);
+    console.log(`📁 Build directory contents: ${files.length} items`);
+    files.forEach(file => {
+      const filePath = path.join(buildDir, file);
+      const stats = fs.statSync(filePath);
+      console.log(`  - ${file} (${stats.isDirectory() ? 'dir' : 'file'})`);
+    });
+  } else {
+    console.error('❌ Build directory does not exist!');
+    process.exit(1);
+  }
+  
 } catch (error) {
   console.error('❌ Build failed:', error.message);
   console.error('Error details:', error);
