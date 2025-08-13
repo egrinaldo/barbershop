@@ -19,6 +19,7 @@ try {
     'leven@3.1.0',
     'is-number@7.0.0',
     'normalize-path@3.0.0',
+    'path-exists@4.0.0',
     'p-limit@3.1.0',
     'p-locate@5.0.0',
     'merge-stream@2.0.0',
