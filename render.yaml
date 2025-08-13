@@ -35,7 +35,7 @@ services:
   - type: web
     name: barbearia-frontend
     env: static
-    buildCommand: cd frontend && npm install && npm run build
+    buildCommand: cd frontend && npm install && node build-render.js
     staticPublishPath: ./frontend/build
     routes:
       - type: rewrite
