@@ -30,6 +30,7 @@ try {
     'ajv@8.17.1',
     'ajv-keywords@5.1.0',
     'lodash.memoize@4.1.2',
+    'lodash.uniq@4.5.0',
     'merge-stream@2.0.0',
     'tempy@3.1.0',
     'temp-dir@3.0.0',
