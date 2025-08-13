@@ -32,6 +32,7 @@ try {
     'lodash.memoize@4.1.2',
     'lodash.uniq@4.5.0',
     'stable@0.1.8',
+    'relateurl@0.2.7',
     'merge-stream@2.0.0',
     'tempy@3.1.0',
     'temp-dir@3.0.0',
