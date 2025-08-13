@@ -13,6 +13,8 @@ try {
   const essentialDeps = [
     'isexe@2.0.0',
     'which@2.0.2',
+    'shebang-regex@3.0.0',
+    'shebang-command@2.0.0',
     'p-limit@3.1.0',
     'merge-stream@2.0.0',
     'tempy@3.1.0', 
