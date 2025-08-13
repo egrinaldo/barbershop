@@ -20,6 +20,7 @@ try {
     'is-number@7.0.0',
     'normalize-path@3.0.0',
     'p-limit@3.1.0',
+    'p-locate@5.0.0',
     'merge-stream@2.0.0',
     'tempy@3.1.0',
     'kleur@4.1.5',
